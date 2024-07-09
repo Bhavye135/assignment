@@ -1,7 +1,7 @@
 
 ### 2. `main.py`
 
-```python
+#```python 
 """
 Assignment: Implement the most efficient algorithm to solve the given problem.
 
@@ -31,17 +31,51 @@ Example:
 >>> longest_path(graph)
 7
 """
-
+from collections import deque
 def longest_path(graph: list) -> int:
     # Your implementation goes here
+    top = topological_sort(graph)
+    return calculate_longest_path(graph, top)
     pass
 
 # Helper function to perform topological sort
 def topological_sort(graph):
     # Your implementation goes here
+    n = len(graph)
+    in_degree = [0] * n
+    for u in range(n):
+        for v, _ in graph[u]:
+            in_degree[v] += 1
+
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    topo_order = []
+
+    while queue:
+        node = queue.popleft()
+        topo_order.append(node)
+        for i, _ in graph[node]:
+            in_degree[i] -= 1
+            if in_degree[i] == 0:
+                queue.append(i)
+
+    return topo_order 
     pass
 
 # Function to calculate longest path using topological sort
 def calculate_longest_path(graph, topo_order):
     # Your implementation goes here
+    n = len(graph)
+    d = [-float('inf')] * n
+
+    for node in topo_order:
+        if d[node] == -float('inf'):
+            d[node] = 0
+
+    for node in topo_order:
+        if d[node] != -float('inf'):
+            for i, weight in graph[node]:
+                if d[i] < d[node] + weight:
+                    d[i] = d[node] + weight
+
+    return max(d)
     pass

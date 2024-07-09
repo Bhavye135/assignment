@@ -29,7 +29,7 @@ def test_longest_path():
     graph4 = [
         [(1, 1), (2, 1)],
         [(3, 1)],
-        [(3, 1)],
+        [(3, 2)],
         []
     ]
     assert longest_path(graph4) == 3
